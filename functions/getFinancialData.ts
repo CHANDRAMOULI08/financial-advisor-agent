@@ -13,18 +13,14 @@ async function fetchMarketData() {
     SYMBOLS.map(async ({ symbol, label }) => {
       try {
         const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=1d`;
-        const res = await fetch(url, {
-          headers: { "User-Agent": "Mozilla/5.0" }
-        });
+        const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
         const data = await res.json();
         const meta = data?.chart?.result?.[0]?.meta;
         const price = meta?.regularMarketPrice ?? null;
         const prev  = meta?.chartPreviousClose ?? null;
         const change = price && prev ? ((price - prev) / prev) * 100 : null;
         return {
-          symbol,
-          label,
-          price,
+          symbol, label, price,
           prev_close: prev,
           change_pct: change ? parseFloat(change.toFixed(2)) : null,
           direction: change ? (change >= 0 ? "up" : "down") : null,
@@ -37,13 +33,42 @@ async function fetchMarketData() {
   return results;
 }
 
+async function fetchNews() {
+  try {
+    const url = "https://feeds.finance.yahoo.com/rss/2.0/headline?s=^GSPC,BTC-USD,^DJI&region=US&lang=en-US";
+    const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
+    const xml = await res.text();
+
+    const items: { title: string; link: string; description: string; pubDate: string }[] = [];
+    const itemRegex = /<item>([\s\S]*?)<\/item>/g;
+    let match;
+    while ((match = itemRegex.exec(xml)) !== null && items.length < 10) {
+      const block = match[1];
+      const get = (tag: string) => {
+        const m = block.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`));
+        return m ? m[1].replace(/<!\[CDATA\[|\]\]>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim() : '';
+      };
+      items.push({
+        title: get('title'),
+        link: get('link'),
+        description: get('description'),
+        pubDate: get('pubDate'),
+      });
+    }
+    return items;
+  } catch {
+    return [];
+  }
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    const [queries, market] = await Promise.all([
+    const [queries, market, news] = await Promise.all([
       base44.asServiceRole.entities.FinancialQuery.list(),
       fetchMarketData(),
+      fetchNews(),
     ]);
 
     const stats = {
@@ -58,7 +83,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    return Response.json({ queries, stats, market });
+    return Response.json({ queries, stats, market, news });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }
