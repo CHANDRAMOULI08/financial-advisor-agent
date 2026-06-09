@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>💰 Finance Tracker</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a1f2e, #0d1117);
+      border-bottom: 1px solid #2d3748;
+      padding: 24px 40px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    header h1 { font-size: 1.6rem; font-weight: 700; color: #f6e05e; }
+    header span { font-size: 1.1rem; color: #a0aec0; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 36px 24px; }
+
+    /* Stats row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    .stat-card {
+      background: #1a1f2e;
+      border: 1px solid #2d3748;
+      border-radius: 14px;
+      padding: 22px 20px;
+      text-align: center;
+    }
+    .stat-card .num { font-size: 2.2rem; font-weight: 800; color: #f6e05e; }
+    .stat-card .label { font-size: 0.85rem; color: #a0aec0; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* Grid layout */
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: #1a1f2e;
+      border: 1px solid #2d3748;
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .card h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #f6e05e;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Priority Stack */
+    .stack-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid #2d3748;
+    }
+    .stack-item:last-child { border-bottom: none; }
+    .stack-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #2d3748;
+      color: #f6e05e;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .stack-item.done .stack-num { background: #22543d; color: #68d391; }
+    .stack-text { font-size: 0.9rem; color: #cbd5e0; line-height: 1.4; }
+    .stack-text strong { color: #e2e8f0; }
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-left: 8px;
+      font-weight: 600;
+    }
+    .badge.free { background: #1c4532; color: #68d391; }
+    .badge.priority { background: #742a2a; color: #fc8181; }
+
+    /* Tips */
+    .tip-item {
+      display: flex;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #2d3748;
+      font-size: 0.88rem;
+      color: #cbd5e0;
+      line-height: 1.5;
+    }
+    .tip-item:last-child { border-bottom: none; }
+    .tip-icon { flex-shrink: 0; font-size: 1rem; }
+
+    /* Queries */
+    .query-card {
+      background: #0f1117;
+      border: 1px solid #2d3748;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .query-card:last-child { margin-bottom: 0; }
+    .query-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .query-q { font-size: 0.9rem; font-weight: 600; color: #e2e8f0; }
+    .query-cat {
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+      background: #2d3748;
+      color: #f6e05e;
+    }
+    .query-a { font-size: 0.82rem; color: #a0aec0; line-height: 1.5; margin-top: 6px; }
+    .query-date { font-size: 0.72rem; color: #4a5568; margin-top: 8px; }
+    .empty { color: #4a5568; font-size: 0.88rem; text-align: center; padding: 24px 0; }
+
+    /* Category breakdown */
+    .cat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #2d3748;
+      font-size: 0.88rem;
+    }
+    .cat-row:last-child { border-bottom: none; }
+    .cat-bar-wrap { width: 120px; background: #2d3748; border-radius: 999px; height: 6px; margin: 0 12px; overflow: hidden; }
+    .cat-bar { height: 100%; background: #f6e05e; border-radius: 999px; }
+    .cat-count { color: #f6e05e; font-weight: 700; font-size: 0.88rem; }
+
+    .full-width { grid-column: 1 / -1; }
+
+    .loader { text-align: center; color: #4a5568; padding: 40px; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <span style="font-size:2rem">💰</span>
+  <div>
+    <h1>Finance Tracker</h1>
+    <span>Your personal financial advisor dashboard</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Stats -->
+  <div class="stats-row" id="statsRow">
+    <div class="stat-card"><div class="num" id="statTotal">—</div><div class="label">Questions Asked</div></div>
+    <div class="stat-card"><div class="num" id="statAnswered">—</div><div class="label">Answered</div></div>
+    <div class="stat-card"><div class="num" id="statCategories">—</div><div class="label">Topics Covered</div></div>
+    <div class="stat-card"><div class="num">7</div><div class="label">Priority Steps</div></div>
+  </div>
+
+  <div class="grid">
+
+    <!-- Financial Priority Stack -->
+    <div class="card">
+      <h2>🎯 The Financial Stack</h2>
+      <div class="stack-item">
+        <div class="stack-num">1</div>
+        <div class="stack-text"><strong>$1,000 Starter Emergency Fund</strong><br>Your first safety net before anything else.</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-num">2</div>
+        <div class="stack-text"><strong>Max Employer 401(k) Match</strong> <span class="badge free">Free Money</span><br>Never leave this on the table.</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-num">3</div>
+        <div class="stack-text"><strong>Pay Off High-Interest Debt</strong> <span class="badge priority">&gt;7% APR</span><br>Guaranteed return = your interest rate.</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-num">4</div>
+        <div class="stack-text"><strong>Full Emergency Fund</strong><br>3–6 months of living expenses.</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-num">5</div>
+        <div class="stack-text"><strong>Max Roth IRA</strong><br>$7,000/year — tax-free growth forever.</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-num">6</div>
+        <div class="stack-text"><strong>Max 401(k)</strong><br>$23,000/year — tax-deferred compounding.</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-num">7</div>
+        <div class="stack-text"><strong>Taxable Brokerage / Real Estate</strong><br>Now you're building real wealth.</div>
+      </div>
+    </div>
+
+    <!-- Quick Tips -->
+    <div class="card">
+      <h2>💡 Top Money Tips</h2>
+      <div class="tip-item"><span class="tip-icon">📊</span>Use the <strong>50/30/20 rule</strong>: 50% needs, 30% wants, 20% savings/debt.</div>
+      <div class="tip-item"><span class="tip-icon">🏦</span>Put savings in a <strong>High-Yield Savings Account</strong> — earns 10x more than a regular bank.</div>
+      <div class="tip-item"><span class="tip-icon">📈</span><strong>Index funds</strong> (VOO, FXAIX) beat most active fund managers long-term.</div>
+      <div class="tip-item"><span class="tip-icon">🔁</span><strong>Automate everything</strong> — savings, investments, bill payments. Remove willpower from the equation.</div>
+      <div class="tip-item"><span class="tip-icon">💳</span>Attack debt with the <strong>avalanche method</strong>: highest interest rate first.</div>
+      <div class="tip-item"><span class="tip-icon">📅</span>Set a weekly <strong>"money date"</strong> — 10 mins to review spending. Awareness is everything.</div>
+      <div class="tip-item"><span class="tip-icon">💼</span><strong>Negotiate your salary</strong> — most people leave $5k–$20k on the table every year.</div>
+    </div>
+
+    <!-- Category Breakdown -->
+    <div class="card" id="categoryCard">
+      <h2>📂 Topics Breakdown</h2>
+      <div id="categoryBreakdown"><div class="empty">No queries yet</div></div>
+    </div>
+
+    <!-- Query History -->
+    <div class="card full-width" id="historyCard">
+      <h2>🗂 Query History</h2>
+      <div id="queryHistory"><div class="loader">Loading your queries...</div></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const API = 'https://superagent-a96e3e3d.base44.app/functions/getFinancialData';
+
+  async function loadData() {
+    try {
+      const res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+      const data = await res.json();
+
+      // Stats
+      document.getElementById('statTotal').textContent = data.stats.total;
+      document.getElementById('statAnswered').textContent = data.stats.answered;
+      document.getElementById('statCategories').textContent = Object.keys(data.stats.byCategory).length;
+
+      // Category breakdown
+      const cats = data.stats.byCategory;
+      const maxVal = Math.max(...Object.values(cats), 1);
+      const catEl = document.getElementById('categoryBreakdown');
+      if (Object.keys(cats).length === 0) {
+        catEl.innerHTML = '<div class="empty">No queries yet — ask your first financial question!</div>';
+      } else {
+        catEl.innerHTML = Object.entries(cats).map(([cat, count]) => `
+          <div class="cat-row">
+            <span>${cat}</span>
+            <div class="cat-bar-wrap"><div class="cat-bar" style="width:${(count/maxVal)*100}%"></div></div>
+            <span class="cat-count">${count}</span>
+          </div>
+        `).join('');
+      }
+
+      // Query history
+      const histEl = document.getElementById('queryHistory');
+      if (!data.queries || data.queries.length === 0) {
+        histEl.innerHTML = '<div class="empty">No queries yet — ask your first financial question!</div>';
+      } else {
+        histEl.innerHTML = [...data.queries].reverse().map(q => `
+          <div class="query-card">
+            <div class="query-header">
+              <div class="query-q">❓ ${q.question}</div>
+              <span class="query-cat">${q.category || 'General'}</span>
+            </div>
+            <div class="query-a">💬 ${q.response}</div>
+            <div class="query-date">${new Date(q.created_date).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit' })}</div>
+          </div>
+        `).join('');
+      }
+
+    } catch (e) {
+      document.getElementById('queryHistory').innerHTML = '<div class="empty">Could not load data.</div>';
+    }
+  }
+
+  loadData();
+</script>
+</body>
+</html>
