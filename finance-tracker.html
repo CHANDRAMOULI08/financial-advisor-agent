@@ -20,12 +20,56 @@
       padding: 24px 40px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      justify-content: space-between;
     }
+    .header-left { display: flex; align-items: center; gap: 14px; }
     header h1 { font-size: 1.6rem; font-weight: 700; color: #f6e05e; }
-    header span { font-size: 1.1rem; color: #a0aec0; }
+    header span.sub { font-size: 1.1rem; color: #a0aec0; }
+    .last-updated { font-size: 0.75rem; color: #4a5568; }
 
     .container { max-width: 1100px; margin: 0 auto; padding: 36px 24px; }
+
+    /* Market Ticker */
+    .market-section { margin-bottom: 32px; }
+    .market-section h2 { font-size: 0.85rem; color: #a0aec0; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .market-ticker {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .ticker-card {
+      background: #1a1f2e;
+      border: 1px solid #2d3748;
+      border-radius: 12px;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ticker-card.up { border-left: 3px solid #48bb78; }
+    .ticker-card.down { border-left: 3px solid #fc8181; }
+    .ticker-label { font-size: 0.78rem; color: #a0aec0; margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+    .ticker-price { font-size: 1.3rem; font-weight: 800; color: #e2e8f0; }
+    .ticker-change {
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .ticker-change.up { color: #48bb78; }
+    .ticker-change.down { color: #fc8181; }
+    .pulse {
+      width: 7px; height: 7px; border-radius: 50%;
+      position: absolute; top: 12px; right: 12px;
+      animation: pulse 2s infinite;
+    }
+    .pulse.up { background: #48bb78; }
+    .pulse.down { background: #fc8181; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.4); }
+    }
 
     /* Stats row */
     .stats-row {
@@ -46,7 +90,7 @@
 
     /* Grid layout */
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .market-ticker { grid-template-columns: 1fr 1fr; } }
 
     .card {
       background: #1a1f2e;
@@ -74,76 +118,46 @@
     }
     .stack-item:last-child { border-bottom: none; }
     .stack-num {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: #2d3748;
-      color: #f6e05e;
-      font-size: 0.8rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #2d3748; color: #f6e05e;
+      font-size: 0.8rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
-    .stack-item.done .stack-num { background: #22543d; color: #68d391; }
     .stack-text { font-size: 0.9rem; color: #cbd5e0; line-height: 1.4; }
     .stack-text strong { color: #e2e8f0; }
     .badge {
-      display: inline-block;
-      font-size: 0.7rem;
-      padding: 2px 8px;
-      border-radius: 999px;
-      margin-left: 8px;
-      font-weight: 600;
+      display: inline-block; font-size: 0.7rem;
+      padding: 2px 8px; border-radius: 999px; margin-left: 8px; font-weight: 600;
     }
     .badge.free { background: #1c4532; color: #68d391; }
     .badge.priority { background: #742a2a; color: #fc8181; }
 
     /* Tips */
     .tip-item {
-      display: flex;
-      gap: 10px;
-      padding: 10px 0;
+      display: flex; gap: 10px; padding: 10px 0;
       border-bottom: 1px solid #2d3748;
-      font-size: 0.88rem;
-      color: #cbd5e0;
-      line-height: 1.5;
+      font-size: 0.88rem; color: #cbd5e0; line-height: 1.5;
     }
     .tip-item:last-child { border-bottom: none; }
     .tip-icon { flex-shrink: 0; font-size: 1rem; }
 
     /* Queries */
     .query-card {
-      background: #0f1117;
-      border: 1px solid #2d3748;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 12px;
+      background: #0f1117; border: 1px solid #2d3748;
+      border-radius: 12px; padding: 16px; margin-bottom: 12px;
     }
     .query-card:last-child { margin-bottom: 0; }
     .query-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .query-q { font-size: 0.9rem; font-weight: 600; color: #e2e8f0; }
-    .query-cat {
-      font-size: 0.72rem;
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-weight: 600;
-      background: #2d3748;
-      color: #f6e05e;
-    }
+    .query-cat { font-size: 0.72rem; padding: 3px 10px; border-radius: 999px; font-weight: 600; background: #2d3748; color: #f6e05e; }
     .query-a { font-size: 0.82rem; color: #a0aec0; line-height: 1.5; margin-top: 6px; }
     .query-date { font-size: 0.72rem; color: #4a5568; margin-top: 8px; }
     .empty { color: #4a5568; font-size: 0.88rem; text-align: center; padding: 24px 0; }
 
     /* Category breakdown */
     .cat-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 0;
-      border-bottom: 1px solid #2d3748;
-      font-size: 0.88rem;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 0; border-bottom: 1px solid #2d3748; font-size: 0.88rem;
     }
     .cat-row:last-child { border-bottom: none; }
     .cat-bar-wrap { width: 120px; background: #2d3748; border-radius: 999px; height: 6px; margin: 0 12px; overflow: hidden; }
@@ -151,24 +165,51 @@
     .cat-count { color: #f6e05e; font-weight: 700; font-size: 0.88rem; }
 
     .full-width { grid-column: 1 / -1; }
-
     .loader { text-align: center; color: #4a5568; padding: 40px; font-size: 0.9rem; }
+
+    /* Refresh button */
+    .refresh-btn {
+      background: #2d3748; border: none; color: #a0aec0;
+      padding: 6px 14px; border-radius: 8px; cursor: pointer;
+      font-size: 0.8rem; display: flex; align-items: center; gap: 6px;
+      transition: background 0.2s;
+    }
+    .refresh-btn:hover { background: #4a5568; color: #e2e8f0; }
+    .refresh-btn.spinning svg { animation: spin 1s linear infinite; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 
 <header>
-  <span style="font-size:2rem">💰</span>
-  <div>
-    <h1>Finance Tracker</h1>
-    <span>Your personal financial advisor dashboard</span>
+  <div class="header-left">
+    <span style="font-size:2rem">💰</span>
+    <div>
+      <h1>Finance Tracker</h1>
+      <span class="sub">Your personal financial advisor dashboard</span>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+    <button class="refresh-btn" id="refreshBtn" onclick="loadData(true)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      Refresh
+    </button>
+    <div class="last-updated" id="lastUpdated">—</div>
   </div>
 </header>
 
 <div class="container">
 
+  <!-- Live Market Data -->
+  <div class="market-section">
+    <h2>📡 Live Market Data</h2>
+    <div class="market-ticker" id="marketTicker">
+      <div class="loader">Loading market data...</div>
+    </div>
+  </div>
+
   <!-- Stats -->
-  <div class="stats-row" id="statsRow">
+  <div class="stats-row">
     <div class="stat-card"><div class="num" id="statTotal">—</div><div class="label">Questions Asked</div></div>
     <div class="stat-card"><div class="num" id="statAnswered">—</div><div class="label">Answered</div></div>
     <div class="stat-card"><div class="num" id="statCategories">—</div><div class="label">Topics Covered</div></div>
@@ -180,34 +221,13 @@
     <!-- Financial Priority Stack -->
     <div class="card">
       <h2>🎯 The Financial Stack</h2>
-      <div class="stack-item">
-        <div class="stack-num">1</div>
-        <div class="stack-text"><strong>$1,000 Starter Emergency Fund</strong><br>Your first safety net before anything else.</div>
-      </div>
-      <div class="stack-item">
-        <div class="stack-num">2</div>
-        <div class="stack-text"><strong>Max Employer 401(k) Match</strong> <span class="badge free">Free Money</span><br>Never leave this on the table.</div>
-      </div>
-      <div class="stack-item">
-        <div class="stack-num">3</div>
-        <div class="stack-text"><strong>Pay Off High-Interest Debt</strong> <span class="badge priority">&gt;7% APR</span><br>Guaranteed return = your interest rate.</div>
-      </div>
-      <div class="stack-item">
-        <div class="stack-num">4</div>
-        <div class="stack-text"><strong>Full Emergency Fund</strong><br>3–6 months of living expenses.</div>
-      </div>
-      <div class="stack-item">
-        <div class="stack-num">5</div>
-        <div class="stack-text"><strong>Max Roth IRA</strong><br>$7,000/year — tax-free growth forever.</div>
-      </div>
-      <div class="stack-item">
-        <div class="stack-num">6</div>
-        <div class="stack-text"><strong>Max 401(k)</strong><br>$23,000/year — tax-deferred compounding.</div>
-      </div>
-      <div class="stack-item">
-        <div class="stack-num">7</div>
-        <div class="stack-text"><strong>Taxable Brokerage / Real Estate</strong><br>Now you're building real wealth.</div>
-      </div>
+      <div class="stack-item"><div class="stack-num">1</div><div class="stack-text"><strong>$1,000 Starter Emergency Fund</strong><br>Your first safety net before anything else.</div></div>
+      <div class="stack-item"><div class="stack-num">2</div><div class="stack-text"><strong>Max Employer 401(k) Match</strong> <span class="badge free">Free Money</span><br>Never leave this on the table.</div></div>
+      <div class="stack-item"><div class="stack-num">3</div><div class="stack-text"><strong>Pay Off High-Interest Debt</strong> <span class="badge priority">&gt;7% APR</span><br>Guaranteed return = your interest rate.</div></div>
+      <div class="stack-item"><div class="stack-num">4</div><div class="stack-text"><strong>Full Emergency Fund</strong><br>3–6 months of living expenses.</div></div>
+      <div class="stack-item"><div class="stack-num">5</div><div class="stack-text"><strong>Max Roth IRA</strong><br>$7,000/year — tax-free growth forever.</div></div>
+      <div class="stack-item"><div class="stack-num">6</div><div class="stack-text"><strong>Max 401(k)</strong><br>$23,000/year — tax-deferred compounding.</div></div>
+      <div class="stack-item"><div class="stack-num">7</div><div class="stack-text"><strong>Taxable Brokerage / Real Estate</strong><br>Now you're building real wealth.</div></div>
     </div>
 
     <!-- Quick Tips -->
@@ -216,20 +236,20 @@
       <div class="tip-item"><span class="tip-icon">📊</span>Use the <strong>50/30/20 rule</strong>: 50% needs, 30% wants, 20% savings/debt.</div>
       <div class="tip-item"><span class="tip-icon">🏦</span>Put savings in a <strong>High-Yield Savings Account</strong> — earns 10x more than a regular bank.</div>
       <div class="tip-item"><span class="tip-icon">📈</span><strong>Index funds</strong> (VOO, FXAIX) beat most active fund managers long-term.</div>
-      <div class="tip-item"><span class="tip-icon">🔁</span><strong>Automate everything</strong> — savings, investments, bill payments. Remove willpower from the equation.</div>
+      <div class="tip-item"><span class="tip-icon">🔁</span><strong>Automate everything</strong> — savings, investments, bill payments.</div>
       <div class="tip-item"><span class="tip-icon">💳</span>Attack debt with the <strong>avalanche method</strong>: highest interest rate first.</div>
-      <div class="tip-item"><span class="tip-icon">📅</span>Set a weekly <strong>"money date"</strong> — 10 mins to review spending. Awareness is everything.</div>
-      <div class="tip-item"><span class="tip-icon">💼</span><strong>Negotiate your salary</strong> — most people leave $5k–$20k on the table every year.</div>
+      <div class="tip-item"><span class="tip-icon">📅</span>Set a weekly <strong>"money date"</strong> — 10 mins to review spending.</div>
+      <div class="tip-item"><span class="tip-icon">💼</span><strong>Negotiate your salary</strong> — most people leave $5k–$20k on the table yearly.</div>
     </div>
 
     <!-- Category Breakdown -->
-    <div class="card" id="categoryCard">
+    <div class="card">
       <h2>📂 Topics Breakdown</h2>
       <div id="categoryBreakdown"><div class="empty">No queries yet</div></div>
     </div>
 
     <!-- Query History -->
-    <div class="card full-width" id="historyCard">
+    <div class="card full-width">
       <h2>🗂 Query History</h2>
       <div id="queryHistory"><div class="loader">Loading your queries...</div></div>
     </div>
@@ -240,10 +260,38 @@
 <script>
   const API = 'https://superagent-a96e3e3d.base44.app/functions/getFinancialData';
 
-  async function loadData() {
+  function formatPrice(val, symbol) {
+    if (val === null) return '—';
+    if (symbol === 'BTC-USD') return '$' + val.toLocaleString('en-US', { maximumFractionDigits: 0 });
+    if (symbol === 'GC=F') return '$' + val.toLocaleString('en-US', { maximumFractionDigits: 0 });
+    return val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  async function loadData(manual = false) {
+    const btn = document.getElementById('refreshBtn');
+    btn.classList.add('spinning');
+
     try {
       const res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
       const data = await res.json();
+
+      // Market ticker
+      const tickerEl = document.getElementById('marketTicker');
+      if (data.market && data.market.length) {
+        tickerEl.innerHTML = data.market.map(m => `
+          <div class="ticker-card ${m.direction || ''}">
+            <div class="pulse ${m.direction || ''}"></div>
+            <div class="ticker-label">${m.label}</div>
+            <div class="ticker-price">${formatPrice(m.price, m.symbol)}</div>
+            <div class="ticker-change ${m.direction || ''}">
+              ${m.direction === 'up' ? '▲' : '▼'}
+              ${m.change_pct !== null ? Math.abs(m.change_pct) + '%' : '—'}
+            </div>
+          </div>
+        `).join('');
+      } else {
+        tickerEl.innerHTML = '<div class="empty">Market data unavailable</div>';
+      }
 
       // Stats
       document.getElementById('statTotal').textContent = data.stats.total;
@@ -283,12 +331,21 @@
         `).join('');
       }
 
+      document.getElementById('lastUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString();
+
     } catch (e) {
+      document.getElementById('marketTicker').innerHTML = '<div class="empty">Could not load market data.</div>';
       document.getElementById('queryHistory').innerHTML = '<div class="empty">Could not load data.</div>';
     }
+
+    btn.classList.remove('spinning');
   }
 
+  // Load on page open
   loadData();
+
+  // Auto-refresh every 60 seconds
+  setInterval(() => loadData(), 60000);
 </script>
 </body>
 </html>
