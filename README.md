@@ -16,31 +16,47 @@ It connects to the live backend automatically — no login, no install required.
 
 ---
 
-### Option 2 — Run Locally
+### Option 2 — Local Setup & Run
 
 #### Prerequisites
-- Python 3.7+
-- Git
 
-#### Steps
+Make sure you have these installed before you begin:
+
+| Tool       | Version  | Install Link                          |
+|------------|----------|---------------------------------------|
+| Python     | 3.7+     | https://www.python.org/downloads/     |
+| Git        | Latest   | https://git-scm.com/downloads         |
+
+#### Step-by-step Setup
 
 ```bash
-# 1. Clone the repo
+# Step 1 — Clone the repository
 git clone https://github.com/CHANDRAMOULI08/financial-advisor-agent.git
+
+# Step 2 — Navigate into the project folder
 cd financial-advisor-agent
 
-# 2. Run the financial advisor skill directly
+# Step 3 — Verify Python is installed correctly
+python3 --version
+# Expected output: Python 3.x.x
+
+# Step 4 — Run the financial advisor skill
+# Replace <topic> with any topic from the table below
 python3 skills/financial_advisor.py general
 python3 skills/financial_advisor.py investing
 python3 skills/financial_advisor.py budgeting
+python3 skills/financial_advisor.py savings
+python3 skills/financial_advisor.py debt
+python3 skills/financial_advisor.py taxes
+python3 skills/financial_advisor.py insurance
 
-# 3. Open the tracker page locally
+# Step 5 — Open the Finance Tracker dashboard locally
 open finance-tracker.html        # macOS
 start finance-tracker.html       # Windows
 xdg-open finance-tracker.html   # Linux
 ```
 
-#### Available topic arguments:
+#### Available Topic Arguments
 
 | Argument     | Description                        |
 |--------------|------------------------------------|
@@ -51,6 +67,22 @@ xdg-open finance-tracker.html   # Linux
 | `debt`       | Avalanche vs snowball method       |
 | `insurance`  | Coverage tips                      |
 | `taxes`      | Tax-advantaged accounts            |
+
+#### Example Output
+
+```bash
+$ python3 skills/financial_advisor.py investing
+
+📈 Investing Tips
+
+  1. Start early — even $50/month compounded over 30 years is powerful.
+  2. Max out your 401(k) match first — it's free money.
+  3. Diversify: don't put all eggs in one basket.
+  4. Low-cost index funds (like S&P 500 ETFs) beat most active funds long term.
+  5. Don't try to time the market — time IN the market beats timing.
+```
+
+> **Note:** The Finance Tracker dashboard (`finance-tracker.html`) fetches live data from the Base44 backend. Query history and stats will only show if you've used the AI agent to ask financial questions.
 
 ---
 
