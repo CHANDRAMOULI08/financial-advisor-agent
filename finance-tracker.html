@@ -30,12 +30,12 @@
     .container { max-width: 1100px; margin: 0 auto; padding: 36px 24px; }
 
     /* Market Ticker */
-    .market-section { margin-bottom: 32px; }
-    .market-section h2 { font-size: 0.85rem; color: #a0aec0; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .section-title { font-size: 0.85rem; color: #a0aec0; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
     .market-ticker {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 12px;
+      margin-bottom: 32px;
     }
     .ticker-card {
       background: #1a1f2e;
@@ -50,12 +50,8 @@
     .ticker-label { font-size: 0.78rem; color: #a0aec0; margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
     .ticker-price { font-size: 1.3rem; font-weight: 800; color: #e2e8f0; }
     .ticker-change {
-      font-size: 0.8rem;
-      font-weight: 700;
-      margin-top: 4px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      font-size: 0.8rem; font-weight: 700; margin-top: 4px;
+      display: flex; align-items: center; gap: 4px;
     }
     .ticker-change.up { color: #48bb78; }
     .ticker-change.down { color: #fc8181; }
@@ -71,6 +67,38 @@
       50% { opacity: 0.4; transform: scale(1.4); }
     }
 
+    /* News Feed */
+    .news-section { margin-bottom: 32px; }
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 12px;
+    }
+    .news-card {
+      background: #1a1f2e;
+      border: 1px solid #2d3748;
+      border-radius: 12px;
+      padding: 16px 18px;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.2s, transform 0.15s;
+      cursor: pointer;
+    }
+    .news-card:hover { border-color: #f6e05e; transform: translateY(-2px); }
+    .news-title {
+      font-size: 0.88rem; font-weight: 600; color: #e2e8f0;
+      line-height: 1.45; margin-bottom: 8px;
+    }
+    .news-desc {
+      font-size: 0.78rem; color: #718096; line-height: 1.45;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .news-meta {
+      font-size: 0.72rem; color: #4a5568; margin-top: 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .news-dot { width: 4px; height: 4px; background: #f6e05e; border-radius: 50%; }
+
     /* Stats row */
     .stats-row {
       display: grid;
@@ -79,42 +107,34 @@
       margin-bottom: 36px;
     }
     .stat-card {
-      background: #1a1f2e;
-      border: 1px solid #2d3748;
-      border-radius: 14px;
-      padding: 22px 20px;
-      text-align: center;
+      background: #1a1f2e; border: 1px solid #2d3748;
+      border-radius: 14px; padding: 22px 20px; text-align: center;
     }
     .stat-card .num { font-size: 2.2rem; font-weight: 800; color: #f6e05e; }
     .stat-card .label { font-size: 0.85rem; color: #a0aec0; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
 
     /* Grid layout */
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .market-ticker { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: 1fr; }
+      .market-ticker { grid-template-columns: 1fr 1fr; }
+      .news-grid { grid-template-columns: 1fr; }
+      header { padding: 16px 20px; flex-direction: column; gap: 12px; align-items: flex-start; }
+    }
 
     .card {
-      background: #1a1f2e;
-      border: 1px solid #2d3748;
-      border-radius: 16px;
-      padding: 24px;
+      background: #1a1f2e; border: 1px solid #2d3748;
+      border-radius: 16px; padding: 24px;
     }
     .card h2 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #f6e05e;
-      margin-bottom: 18px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 1rem; font-weight: 700; color: #f6e05e;
+      margin-bottom: 18px; display: flex; align-items: center; gap: 8px;
     }
 
     /* Priority Stack */
     .stack-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      padding: 12px 0;
-      border-bottom: 1px solid #2d3748;
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 12px 0; border-bottom: 1px solid #2d3748;
     }
     .stack-item:last-child { border-bottom: none; }
     .stack-num {
@@ -200,11 +220,17 @@
 
 <div class="container">
 
-  <!-- Live Market Data -->
-  <div class="market-section">
-    <h2>📡 Live Market Data</h2>
-    <div class="market-ticker" id="marketTicker">
-      <div class="loader">Loading market data...</div>
+  <!-- Live Market Ticker -->
+  <div class="section-title">📡 Live Market Data</div>
+  <div class="market-ticker" id="marketTicker">
+    <div class="loader">Loading market data...</div>
+  </div>
+
+  <!-- Live Financial News -->
+  <div class="news-section">
+    <div class="section-title">📰 Live Financial News</div>
+    <div class="news-grid" id="newsFeed">
+      <div class="loader">Loading latest news...</div>
     </div>
   </div>
 
@@ -267,6 +293,14 @@
     return val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
+  function timeAgo(dateStr) {
+    const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000);
+    if (diff < 60) return diff + 's ago';
+    if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+    return Math.floor(diff / 86400) + 'd ago';
+  }
+
   async function loadData(manual = false) {
     const btn = document.getElementById('refreshBtn');
     btn.classList.add('spinning');
@@ -291,6 +325,25 @@
         `).join('');
       } else {
         tickerEl.innerHTML = '<div class="empty">Market data unavailable</div>';
+      }
+
+      // News feed
+      const newsEl = document.getElementById('newsFeed');
+      if (data.news && data.news.length) {
+        newsEl.innerHTML = data.news.map(n => `
+          <a class="news-card" href="${n.link}" target="_blank" rel="noopener">
+            <div class="news-title">${n.title}</div>
+            ${n.description ? `<div class="news-desc">${n.description}</div>` : ''}
+            <div class="news-meta">
+              <div class="news-dot"></div>
+              <span>${timeAgo(n.pubDate)}</span>
+              <span style="color:#2d3748">·</span>
+              <span>Yahoo Finance</span>
+            </div>
+          </a>
+        `).join('');
+      } else {
+        newsEl.innerHTML = '<div class="empty">No news available right now.</div>';
       }
 
       // Stats
@@ -335,16 +388,14 @@
 
     } catch (e) {
       document.getElementById('marketTicker').innerHTML = '<div class="empty">Could not load market data.</div>';
+      document.getElementById('newsFeed').innerHTML = '<div class="empty">Could not load news.</div>';
       document.getElementById('queryHistory').innerHTML = '<div class="empty">Could not load data.</div>';
     }
 
     btn.classList.remove('spinning');
   }
 
-  // Load on page open
   loadData();
-
-  // Auto-refresh every 60 seconds
   setInterval(() => loadData(), 60000);
 </script>
 </body>
