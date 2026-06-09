@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "question": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Budgeting",
+        "Savings",
+        "Investing",
+        "Debt",
+        "Insurance",
+        "Taxes",
+        "General"
+      ]
+    },
+    "response": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Pending",
+        "Answered"
+      ]
+    }
+  },
+  "required": [],
+  "name": "FinancialQuery"
+}
