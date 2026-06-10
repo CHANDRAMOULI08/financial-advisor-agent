@@ -1,77 +1,88 @@
 # 💰 Financial Advisor Agent
 
-A personal financial advisor agent built on Base44. Provides general money advice, tips, and tracks financial queries — with a live Finance Tracker dashboard.
+A personal financial advisor agent built on Base44, powered by **Google Gemini 2.5 Flash AI**. Ask any money question via the live chat, get real AI-powered advice, and track everything on the Finance Tracker dashboard — with live market data, real-time news, and auto-refresh every 60 seconds.
 
 ---
 
-## 🚀 How to Run This Project
+## 🚀 How to Use
 
-### Option 1 — Use the Live Dashboard *(No setup needed)*
+### Option 1 — Live Dashboard *(No setup needed)*
 
-Just open the Finance Tracker page directly in your browser:
+Open the Finance Tracker directly in your browser:
 
-👉 [Finance Tracker Dashboard](https://base44.app/api/apps/6a279a127eaa6c84a96e3e3d/files/mp/public/6a279a127eaa6c84a96e3e3d/ba13f2fa5_finance-tracker.html)
+👉 [Finance Tracker Dashboard](https://base44.app/api/apps/6a279a127eaa6c84a96e3e3d/files/mp/public/6a279a127eaa6c84a96e3e3d/82c58bcec_finance-tracker.html)
 
-It connects to the live backend automatically — no login, no install required.
+- Live market ticker: S&P 500, Dow, NASDAQ, Bitcoin, Gold
+- Real-time financial news feed
+- AI-powered chat advisor (bottom-right corner 💬)
+- Query history & category breakdown
+- Auto-refreshes every 60 seconds
 
 ---
 
-### Option 2 — Local Setup & Run
+### Option 2 — Chat with the AI Agent
+
+Ask financial questions directly:
+
+👉 [Open Agent Chat](https://app.base44.com/superagent/6a279a127eaa6c84a96e3e3d)
+
+Example questions:
+- *"I make $75k, have $12k in student loans at 5%, and want to retire early — where do I start?"*
+- *"Should I pay off debt or invest in a Roth IRA first?"*
+- *"How do I build a 6-month emergency fund?"*
+- *"What's the best way to invest $500/month?"*
+
+Every answer is auto-logged and appears on the dashboard in real time.
+
+---
+
+### Option 3 — Local Setup
 
 #### Prerequisites
 
-Make sure you have these installed before you begin:
+| Tool   | Version | Install Link                      |
+|--------|---------|-----------------------------------|
+| Python | 3.7+    | https://www.python.org/downloads/ |
+| Git    | Latest  | https://git-scm.com/downloads     |
 
-| Tool       | Version  | Install Link                          |
-|------------|----------|---------------------------------------|
-| Python     | 3.7+     | https://www.python.org/downloads/     |
-| Git        | Latest   | https://git-scm.com/downloads         |
-
-#### Step-by-step Setup
+#### Setup Steps
 
 ```bash
-# Step 1 — Clone the repository
+# 1. Clone the repo
 git clone https://github.com/CHANDRAMOULI08/financial-advisor-agent.git
-
-# Step 2 — Navigate into the project folder
 cd financial-advisor-agent
 
-# Step 3 — Verify Python is installed correctly
-python3 --version
-# Expected output: Python 3.x.x
+# 2. Run the financial advisor skill locally
+python3 .agents/skills/financial_advisor.py general
+python3 .agents/skills/financial_advisor.py investing
+python3 .agents/skills/financial_advisor.py budgeting
+python3 .agents/skills/financial_advisor.py savings
+python3 .agents/skills/financial_advisor.py debt
+python3 .agents/skills/financial_advisor.py taxes
+python3 .agents/skills/financial_advisor.py insurance
 
-# Step 4 — Run the financial advisor skill
-# Replace <topic> with any topic from the table below
-python3 skills/financial_advisor.py general
-python3 skills/financial_advisor.py investing
-python3 skills/financial_advisor.py budgeting
-python3 skills/financial_advisor.py savings
-python3 skills/financial_advisor.py debt
-python3 skills/financial_advisor.py taxes
-python3 skills/financial_advisor.py insurance
-
-# Step 5 — Open the Finance Tracker dashboard locally
+# 3. Open the dashboard locally
 open finance-tracker.html        # macOS
 start finance-tracker.html       # Windows
 xdg-open finance-tracker.html   # Linux
 ```
 
-#### Available Topic Arguments
+#### Available Topics
 
-| Argument     | Description                        |
-|--------------|------------------------------------|
-| `general`    | Top money tips & mindset           |
-| `budgeting`  | 50/30/20 rule, expense tracking    |
-| `savings`    | Emergency funds, HYSAs             |
-| `investing`  | Index funds, 401(k), IRA           |
-| `debt`       | Avalanche vs snowball method       |
-| `insurance`  | Coverage tips                      |
-| `taxes`      | Tax-advantaged accounts            |
+| Argument    | Description                     |
+|-------------|---------------------------------|
+| `general`   | Top money tips & mindset        |
+| `budgeting` | 50/30/20 rule, expense tracking |
+| `savings`   | Emergency funds, HYSAs          |
+| `investing` | Index funds, 401(k), IRA        |
+| `debt`      | Avalanche vs snowball method    |
+| `insurance` | Coverage tips                   |
+| `taxes`     | Tax-advantaged accounts         |
 
 #### Example Output
 
 ```bash
-$ python3 skills/financial_advisor.py investing
+$ python3 .agents/skills/financial_advisor.py investing
 
 📈 Investing Tips
 
@@ -82,23 +93,37 @@ $ python3 skills/financial_advisor.py investing
   5. Don't try to time the market — time IN the market beats timing.
 ```
 
-> **Note:** The Finance Tracker dashboard (`finance-tracker.html`) fetches live data from the Base44 backend. Query history and stats will only show if you've used the AI agent to ask financial questions.
-
 ---
 
-### Option 3 — Chat with the AI Agent *(Full experience)*
+## 🤖 Gemini AI Setup (for self-hosting)
 
-Ask financial questions directly to the agent:
+The chat advisor is powered by **Google Gemini 2.5 Flash** — free via Google AI Studio.
 
-👉 [Open Agent Chat](https://app.base44.com/superagent/6a279a127eaa6c84a96e3e3d)
+### Get your free API key
 
-Example questions:
-- *"How should I start investing with $500/month?"*
-- *"I have $8,000 in credit card debt — what should I do?"*
-- *"Give me budgeting tips"*
-- *"What is the 50/30/20 rule?"*
+1. Go to 👉 [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
+2. Sign in with your Google account
+3. Click **"Create API key"**
+4. Copy the key (starts with `AIza...`)
 
-Every question is automatically logged and shows up on the Finance Tracker dashboard in real time.
+### Configure the environment
+
+Create a `.env` file in the project root:
+
+```bash
+GEMINI_API_KEY=AIzaYourKeyHere
+```
+
+> ⚠️ Never commit your `.env` file. It's already in `.gitignore`.
+
+### How the AI works
+
+The `functions/askAdvisor.ts` backend function:
+1. Receives the user's question + conversation history from the dashboard
+2. Sends it to Gemini 2.5 Flash with a financial advisor system prompt
+3. Returns the AI response with a detected category (Investing, Debt, Savings, etc.)
+4. Auto-saves every Q&A to the `FinancialQuery` database entity
+5. Falls back through model versions if a newer one isn't available yet
 
 ---
 
@@ -106,40 +131,62 @@ Every question is automatically logged and shows up on the Finance Tracker dashb
 
 ```
 financial-advisor-agent/
-├── finance-tracker.html            # Frontend dashboard UI
+├── finance-tracker.html              # Frontend dashboard (live market + AI chat)
 ├── functions/
-│   └── getFinancialData.ts         # Backend API (Deno / Base44 serverless)
-├── skills/
-│   └── financial_advisor.py        # Core advice engine (Python)
-├── rules/
-│   └── financial_advisor_rules.md  # Agent behavior & rules
-└── entities/
-    └── FinancialQuery.json          # Database schema
+│   ├── askAdvisor.ts                 # Gemini AI chat backend (Deno / Base44)
+│   └── getFinancialData.ts           # Live market data + news feed backend
+├── .agents/
+│   ├── skills/
+│   │   └── financial_advisor.py      # Core advice engine (Python CLI)
+│   └── rules/
+│       └── financial_advisor_rules.md # Agent behavior rules
+├── entities/
+│   └── FinancialQuery.json           # Database schema for query tracking
+└── README.md
 ```
 
 ---
 
 ## 🛠 Tech Stack
 
-| Layer      | Technology                        |
-|------------|-----------------------------------|
-| Frontend   | Vanilla HTML / CSS / JS           |
-| Backend    | Deno (Base44 serverless functions)|
-| Database   | Base44 entity store               |
-| AI Agent   | Base44 Superagent platform        |
+| Layer      | Technology                          |
+|------------|-------------------------------------|
+| Frontend   | Vanilla HTML / CSS / JS             |
+| Backend    | Deno (Base44 serverless functions)  |
+| AI Model   | Google Gemini 2.5 Flash (free tier) |
+| Database   | Base44 entity store                 |
+| Agent      | Base44 Superagent platform          |
+| Market Data| Yahoo Finance (RSS + API)           |
 
 ---
 
 ## 💡 Features
 
-- General money advice & tips across 7 categories
-- Financial Priority Stack (7-step wealth building order)
-- Auto-logs all financial Q&A to a tracker database
-- Live Finance Tracker dashboard with query history & stats
-- Category breakdown with visual bar charts
+- 🤖 **Real AI chat** — Google Gemini 2.5 Flash answers any financial question
+- 💬 **Conversation memory** — follow-up questions work naturally within a session
+- 📈 **Live market ticker** — S&P 500, Dow Jones, NASDAQ, Bitcoin, Gold
+- 📰 **Real-time news feed** — latest financial headlines, auto-refreshed
+- 🔄 **Auto-refresh** — dashboard updates every 60 seconds
+- 📊 **Query history** — every Q&A logged with category badge
+- 🗂 **7 categories** — Investing, Debt, Budgeting, Savings, Taxes, Insurance, General
+- 💰 **Priority stack** — 7-step wealth building order always visible
+
+---
+
+## 🏦 Financial Priority Stack
+
+This is the order you should tackle your finances:
+
+1. 🟢 Build a $1,000 starter emergency fund
+2. 🟢 Get full employer 401(k) match (free money!)
+3. 🟡 Pay off high-interest debt (> 7% APR)
+4. 🟡 Build 3–6 month full emergency fund
+5. 🔵 Max out Roth IRA ($7,000/year)
+6. 🔵 Max out 401(k) ($23,000/year)
+7. 🟣 Invest in taxable brokerage / real estate
 
 ---
 
 ## ⚠️ Disclaimer
 
-This agent provides general financial education — not personalized legal, tax, or investment advice for your specific situation. Always consult a licensed financial advisor for major decisions.
+This project provides general financial education — not personalized legal, tax, or investment advice for your specific situation. Always consult a licensed financial advisor for major decisions.
